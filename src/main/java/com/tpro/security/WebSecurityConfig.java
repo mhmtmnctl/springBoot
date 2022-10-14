@@ -1,7 +1,13 @@
 package com.tpro.security;
 
+import java.security.AuthProvider;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -26,6 +32,9 @@ ismi emin şifreside bu...
 ***lms'se girdik mesela ama heryere girmeye yetkimiz yok. bir ders videosu ekleyemeyiz. buna yetkimiz yok. ya admin ya teacher olarak girmemiz lazım
  */
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+	@Autowired
+	private UserDetailsService userDetailsService;//security giriş katmanı servis katmanı old. için önce bunu enjekte ettik
+	
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -39,6 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	authenticated().//auth etceksin.
 	and().httpBasic();    // ve bunları basic auth ile yap..artık her requeste kullanıcı adı ve şifresini vermesi lazım ve decode etmesi lazım.		
 	}
+	/*
 	//inMemory olarak userları oluşturuyoruz. program kapandığında gidecek
 	
 	@Override
@@ -58,9 +68,50 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		
 	}
+	*/ //yoruma aldık inMemory kısmını
+	
+	
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {//görseldeki yeşil kısım...authentication manager yani
+		
+		auth.authenticationProvider(authProvider());//aşağıda bu metodu oluşturduk. içerdeki authProvider'ı
+		
+	}
+	
 	@Bean
-	public PasswordEncoder passwordEncoder() {
+	public DaoAuthenticationProvider authProvider() {
+		
+		DaoAuthenticationProvider authProvider=new DaoAuthenticationProvider();
+		//kullanıcı bilgilerini girelim
+		authProvider.setUserDetailsService(userDetailsService);
+		//kullanılacak encoder-decoder metodunu belitrliyoruz
+		authProvider.setPasswordEncoder(passwordEncoder());
+		
+		return authProvider;
+		
+	}
+	
+	
+	
+	
+	@Bean
+	public PasswordEncoder passwordEncoder() {//resimdeki pembe kısım burası oluyor. yani password encoder
 		
 		return new BCryptPasswordEncoder(10);//neden 10 kere dedik kaçırdım burayı sor.
 	}
 }
+
+/*
+ * ilk requesti authentication filter karşılıyor.
+ * securitycontext te login olan kullanıcı bilgileri tuuluyor
+ * 
+ */
+
+
+
+
+
+
+
+
+

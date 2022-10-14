@@ -24,11 +24,12 @@ public class UserDetailServiceImpl implements UserDetailsService{
 	@Autowired
 	UserRepository userRepository;
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {//username unique yapmıştık. projede email üzerinden kontrol etcez
 		
 	User user=	userRepository.findByUserName(username).orElseThrow(()-> new ResourceNotFoundException("User Not Found username: "+username));//db den user aldık 
 	
-	if(user!=null) {
+	if(user!=null) {//nullpointer exceptin gelme olasılığı düşük ama yine de kontrol ettik
+		//kullanıcı adı, şifresi ve rolü lazım
 		return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(),buildGrantedAuthorities(user.getRoles()));
 	}
 	else {
@@ -39,7 +40,7 @@ public class UserDetailServiceImpl implements UserDetailsService{
 	}
 	
 	//rol özelliği security katmanında simple garanted authority yapısında olması gerekiyor.
-	private static List<SimpleGrantedAuthority> buildGrantedAuthorities (final Set<Role> roles) {
+	private static List<SimpleGrantedAuthority> buildGrantedAuthorities (final Set<Role> roles) {//statik yaptık başka yerde kullanmak için.
 		
 		List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 		for(Role role:roles) {
