@@ -16,6 +16,15 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @Configuration//konfigurasyon yapacağımı söylüyorum. bu class config class'ı
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)//security'i metod bazlı olarak çalışmak istediğimiz için koyduk, yazmasaydık metod bazlı çalışamazdık
+/*
+ * --------Spring Security--------
+sen kimsin? -->authentication
+acaba burda bulunmaya yetkim var mı?-->authorization
+23:13
+***login ile giriş yaptığımızda bu authentication oluyor.
+ismi emin şifreside bu...
+***lms'se girdik mesela ama heryere girmeye yetkimiz yok. bir ders videosu ekleyemeyiz. buna yetkimiz yok. ya admin ya teacher olarak girmemiz lazım
+ */
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override

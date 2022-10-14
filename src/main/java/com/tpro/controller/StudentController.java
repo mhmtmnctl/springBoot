@@ -1,12 +1,9 @@
 package com.tpro.controller;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,20 +24,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.tpro.domain.Student;
 import com.tpro.dto.StudentDTO;
 import com.tpro.service.StudentService;
-/*
- * NOTLAR
- * --------Spring Security--------
-sen kimsin? -->authentication
-acaba burda bulunmaya yetkim var mı?-->authorization
-***login ile giriş yaptığımızda bu authentication oluyor.
-ismi emin şifreside bu...
-***lms'se girdik mesela ama heryere girmeye yetkimiz yok. bir ders videosu ekleyemeyiz. buna yetkimiz yok. ya admin ya teacher olarak girmemiz lazım
- */
-
 
 @RestController
 @RequestMapping("/students")
